@@ -1,53 +1,43 @@
-
 package leetcode;
-/*
-给定一个正整数 n，生成一个包含 1 到 n^2 所有元素，且元素按顺时针顺序螺旋排列的正方形矩阵。
 
-示例:
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
-输入: 3 输出: [ [ 1, 2, 3 ], [ 8, 9, 4 ], [ 7, 6, 5 ] ]
- */
 public class leetcode_56 {
-  public static void main(String[] args){
-
-  }
 }
-/*
-思路：设置四个变量，记录左右上下的边界线，嵌套四重循环进行改良
-代码比较容易理解
+
+/**
+ * 以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
+ 。
  */
-
-class leetcode_59{
-    public int[][] generateMatrix(int n) {
-        int[][] result = new int[n][n];
-        int left = 0, right = n-1, top = 0, bottom = n-1;
-        int totol_n = n*n;
-        int num =1;
-        while(num<=totol_n){
-            for(int i  = left;i<=right;i++){
-                result[top][i]= num;
-                num++;
-            }
-            top++;
-            for(int i = top;i<= bottom;i++){
-                result[i][right]= num;
-                num++;
-            }
-            right--;
-            for(int i = right;i >= left; i--){
-                result[bottom][i] = num;
-                num++;
-            }
-            bottom--;
-            for(int i = bottom; i>=top;i--){
-                result[i][left]=num;
-                num++;
-            }
-            left++;
+class lee_56{
+    /**
+     *Arrays。sort重写，按照左区间的大小进行排序
+     * @param intervals
+     * @return
+     */
+    public int[][] merge(int[][] intervals) {
+        if (intervals.length == 0) {
+            return new int[0][2];
         }
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            public int compare(int[] interval1, int[] interval2) {
+                return interval1[0] - interval2[0];
+            }
+        });
+        List<int[]> merged = new ArrayList<int[]>();
+        for (int i = 0; i < intervals.length; ++i) {
+            int L = intervals[i][0], R = intervals[i][1];
+            if (merged.size() == 0 || merged.get(merged.size() - 1)[1] < L) {
+                merged.add(new int[]{L, R});
+            } else {
+                merged.get(merged.size() - 1)[1] = Math.max(merged.get(merged.size() - 1)[1], R);
+            }
+        }
+        return merged.toArray(new int[merged.size()][]);
 
-
-
-        return result;
     }
 }
